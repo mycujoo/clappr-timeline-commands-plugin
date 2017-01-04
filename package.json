@@ -8,7 +8,7 @@
     "watch": "./node_modules/.bin/webpack --progress --optimize-occurence-order --watch",
     "release": "./node_modules/.bin/webpack --progress --optimize-occurence-order -p"
   },
-  "author": "Gabriel Plegge <gabriel@mycujoo.tv>",
+  "author": "Gabriel Plegge <gplegge@gmail.com>",
   "license": "MIT",
   "repository": "mycujoo/clappr-timeline-commands-plugin",
   "devDependencies": {
