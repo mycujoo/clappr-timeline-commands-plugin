@@ -1,5 +1,5 @@
 
-export default class TimelineEvent {
+export default class TimelineCommand {
     constructor(time, fn) {
         this._fn = fn
         this._time = time
@@ -10,7 +10,7 @@ export default class TimelineEvent {
         return this._time
     }
 
-    getName() {
+    getCommand() {
         return this._fn
     }
 

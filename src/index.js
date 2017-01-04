@@ -1,5 +1,5 @@
 import {CorePlugin, Events} from 'clappr'
-import TimelineEvent from './TimelineEvent.js'
+import TimelineCommand from './TimelineCommand.js'
 
 export default class TimelineEventsPlugin extends CorePlugin {
     // backwards compatibility
@@ -12,7 +12,7 @@ export default class TimelineEventsPlugin extends CorePlugin {
     constructor(core) {
         super(core)
         this._mediaControlContainerLoaded = false
-        this.clearEvents()
+        this.clearCommands()
     }
 
     bindEvents() {
@@ -42,7 +42,7 @@ export default class TimelineEventsPlugin extends CorePlugin {
     }
 
     _dispatchEventsForTime(time) {
-        return this._events
+        return this._commands
             .filter((event) => event.getTime() === time && !event.isFired())
             .map(event => event.fire())
     }
@@ -57,30 +57,26 @@ export default class TimelineEventsPlugin extends CorePlugin {
     /*
     * Events
     */
-    addEvent(time, eventName) {
-        this._events.push(new TimelineEvent(time, eventName))
+    addCommand(time, command) {
+        this._commands.push(new TimelineCommand(time, command))
     }
 
-    removeEvent(time, eventName) {
-        this._events = this._events.filter((event) => { event.getTime() !== time && event.getName() !== eventName})
+    removeCommand(time, command) {
+        this._commands = this._commands.filter((command) => { command.getTime() !== time && command.getCommand() !== command})
     }
 
-    clearEvents() {
-        this._events = []
+    clearCommands() {
+        this._commands = []
     }
 
     getEvents(start=false, end=false) {
-        this._events
-            .filter((event) => start === false ? true : (event.getTime() >= start))
-            .filter((event) => end === false ? true : (event.getTime() <= end))
-            .map((event) => {
-                this.dispatch(event.getName())
-                return event
-            })
+        return this._commands
+            .filter((command) => start === false ? true : (command.getTime() >= start))
+            .filter((command) => end === false ? true : (command.getTime() <= end))
     }
 
     destroy() {
         super.destroy()
-        this._events = null
+        this._commands = null
     }
 }
