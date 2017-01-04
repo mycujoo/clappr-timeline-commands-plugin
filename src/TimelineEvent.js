@@ -7,7 +7,7 @@ export default class TimelineEvent {
     }
 
     getTime() {
-        return this._time || -1
+        return this._time
     }
 
     getName() {
@@ -22,5 +22,9 @@ export default class TimelineEvent {
         this._isFired = true
         this._fn()
         return this
+    }
+
+    reset() {
+        this._isFired = false
     }
 }
