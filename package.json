@@ -1,16 +1,16 @@
 {
-  "name": "clappr-timeline-events-plugin",
+  "name": "clappr-timeline-commands-plugin",
   "version": "0.0.1",
-  "description": "A plugin for clappr which executes actions when the timeline hits a time.",
-  "main": "dist/clappr-timeline-events-plugin.js",
+  "description": "A plugin for clappr which executes functions when the timeline hits a time.",
+  "main": "dist/clappr-timeline-commands-plugin.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack --progress --optimize-occurence-order",
     "watch": "./node_modules/.bin/webpack --progress --optimize-occurence-order --watch",
     "release": "./node_modules/.bin/webpack --progress --optimize-occurence-order -p"
   },
-  "author": "Gabriel Plegge <gplegge@gmail.com>",
+  "author": "Gabriel Plegge <gabriel@mycujoo.tv>",
   "license": "MIT",
-  "repository": "plegge/clappr-timeline-events-plugin",
+  "repository": "mycujoo/clappr-timeline-commands-plugin",
   "devDependencies": {
     "babel-core": "^6.7.5",
     "babel-loader": "^6.2.4",
