@@ -16,15 +16,15 @@
         });
 
         var timeline = player.getPlugin('timeline-commands-plugin');
-        var cmd = function(timer) {
-            return function() { console.log("Command "+timer) }
+        var createLogCommand = function(timer) {
+            return function() { console.log('Command executed on '+timer+'s') }
         }
 
-        timeline.addCommand(3, cmd(3))
-        timeline.addCommand(5, cmd(5))
-        timeline.addCommand(8, cmd(8))
-        timeline.addCommand(10, cmd(10))
-        timeline.addCommand(13, cmd(13))
+        timeline.addCommand(3, createLogCommand(3))
+        timeline.addCommand(5, createLogCommand(5))
+        timeline.addCommand(8, createLogCommand(8))
+        timeline.addCommand(10, createLogCommand(10))
+        timeline.addCommand(13, createLogCommand(13))
     </script>
 </body>
 </html>
