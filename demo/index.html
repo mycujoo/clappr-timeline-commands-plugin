@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="http://cdn.clappr.io/latest/clappr.js"></script>
-    <script type="text/javascript" src="../dist/clappr-timeline-events-plugin.js"></script>
+    <script type="text/javascript" src="../dist/clappr-timeline-commands-plugin.js"></script>
 </head>
 <body>
     <div id="player"></div>
@@ -11,11 +11,11 @@
             source: "http://tjenkinson.me/clappr-thumbnails-plugin/assets/video.mp4",
             parentId: "#player",
             plugins: {
-                core: [ClapprTimelineEventsPlugin],
+                core: [ClapprTimelineCommandsPlugin],
             }
         });
 
-        var timeline = player.getPlugin('timeline-events-plugin');
+        var timeline = player.getPlugin('timeline-commands-plugin');
         var cmd = function(timer) {
             return function() { console.log("Command "+timer) }
         }

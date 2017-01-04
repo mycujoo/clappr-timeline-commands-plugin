@@ -1,13 +1,13 @@
 import {CorePlugin, Events} from 'clappr'
 import TimelineCommand from './TimelineCommand.js'
 
-export default class TimelineEventsPlugin extends CorePlugin {
+export default class TimelineCommandsPlugin extends CorePlugin {
     // backwards compatibility
     static get default() {
-        return TimelineEventsPlugin
+        return TimelineCommandsPlugin
     }
 
-    get name() { return 'timeline-events-plugin' }
+    get name() { return 'timeline-commands-plugin' }
 
     constructor(core) {
         super(core)
@@ -22,7 +22,7 @@ export default class TimelineEventsPlugin extends CorePlugin {
     _onMediaControlContainerChanged() {
         this._bindContainerEvents()
         this._mediaControlContainerLoaded = true
-        this._updateDuration()
+        this._updateTimer()
     }
 
     _bindContainerEvents() {
@@ -40,24 +40,24 @@ export default class TimelineEventsPlugin extends CorePlugin {
     }
 
     _onTimeUpdate() {
-        this._updateDuration()
+        this._updateTimer()
     }
 
-    _updateDuration() {
+    _updateTimer() {
         this._executeCommandsForTime(parseInt(this.core.mediaControl.container.getCurrentTime()))
     }
 
     _executeCommandsForTime(time) {
         return this._commands
-            .filter((event) => event.getTime() === time && !event.isFired())
-            .map(event => event.fire())
+            .filter((command) => command.getTime() === time && !command.isFired())
+            .map(command => command.fire())
     }
 
     _getOptions() {
-        if (!("timelineEventsPlugin" in this.core.options)) {
-            throw "'timelineEventsPlugin' property missing from options object."
+        if (!("timelineCommandsPlugin" in this.core.options)) {
+            throw "'timelineCommandsPlugin' property missing from options object."
         }
-        return this.core.options.timelineEventsPlugin
+        return this.core.options.timelineCommandsPlugin
     }
 
     /*
@@ -81,7 +81,7 @@ export default class TimelineEventsPlugin extends CorePlugin {
         this._commands.map((command) => command.reset())
     }
 
-    getEvents(start=false, end=false) {
+    getCommands(start=false, end=false) {
         return this._commands
             .filter((command) => start === false ? true : (command.getTime() >= start))
             .filter((command) => end === false ? true : (command.getTime() <= end))

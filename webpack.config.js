@@ -28,8 +28,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'clappr-timeline-events-plugin.js',
-        library: 'ClapprTimelineEventsPlugin',
+        filename: 'clappr-timeline-commands-plugin.js',
+        library: 'ClapprTimelineCommandsPlugin',
         libraryTarget: 'umd',
     },
 };
