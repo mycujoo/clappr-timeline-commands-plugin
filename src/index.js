@@ -28,9 +28,15 @@ export default class TimelineEventsPlugin extends CorePlugin {
     _bindContainerEvents() {
         if (this._oldContainer) {
             this.stopListening(this._oldContainer, Events.CONTAINER_TIMEUPDATE, this._onTimeUpdate)
+            this.stopListening(this._oldContainer, Events.CONTAINER_SEEK, this._onSeekContainer)
         }
         this._oldContainer = this.core.mediaControl.container
         this.listenTo(this.core.mediaControl.container, Events.CONTAINER_TIMEUPDATE, this._onTimeUpdate)
+        this.listenTo(this.core.mediaControl.container, Events.CONTAINER_SEEK, this._onSeekContainer)
+    }
+
+    _onSeekContainer() {
+        this.resetCommands()
     }
 
     _onTimeUpdate() {
@@ -38,10 +44,10 @@ export default class TimelineEventsPlugin extends CorePlugin {
     }
 
     _updateDuration() {
-        this._dispatchEventsForTime(parseInt(this.core.mediaControl.container.getCurrentTime()))
+        this._executeCommandsForTime(parseInt(this.core.mediaControl.container.getCurrentTime()))
     }
 
-    _dispatchEventsForTime(time) {
+    _executeCommandsForTime(time) {
         return this._commands
             .filter((event) => event.getTime() === time && !event.isFired())
             .map(event => event.fire())
@@ -62,11 +68,17 @@ export default class TimelineEventsPlugin extends CorePlugin {
     }
 
     removeCommand(time, command) {
-        this._commands = this._commands.filter((command) => { command.getTime() !== time && command.getCommand() !== command})
+        this._commands = this._commands.filter((command) => {
+            return command.getTime() !== time && command.getCommand() !== command
+        })
     }
 
     clearCommands() {
         this._commands = []
+    }
+
+    resetCommands() {
+        this._commands.map((command) => command.reset())
     }
 
     getEvents(start=false, end=false) {

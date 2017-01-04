@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://cdn.clappr.io/latest/clappr.js"></script>
+    <script type="text/javascript" src="../dist/clappr-timeline-events-plugin.js"></script>
+</head>
+<body>
+    <div id="player"></div>
+    <script>
+        var player = new Clappr.Player({
+            source: "http://tjenkinson.me/clappr-thumbnails-plugin/assets/video.mp4",
+            parentId: "#player",
+            plugins: {
+                core: [ClapprTimelineEventsPlugin],
+            }
+        });
+
+        var timeline = player.getPlugin('timeline-events-plugin');
+        var cmd = function(timer) {
+            return function() { console.log("Command "+timer) }
+        }
+
+        timeline.addCommand(3, cmd(3))
+        timeline.addCommand(13, cmd(13))
+        timeline.addCommand(25, cmd(25))
+        timeline.addCommand(37, cmd(37))
+        timeline.addCommand(56, cmd(56))
+        timeline.addCommand(75, cmd(75))
+        timeline.addCommand(87, cmd(87))
+        timeline.addCommand(96, cmd(96))
+        timeline.addCommand(102, cmd(102))
+        timeline.addCommand(116, cmd(116))
+        timeline.addCommand(167, cmd(167))
+    </script>
+</body>
+</html>
