@@ -1,8 +1,7 @@
-import {ContainerPlugin, Events} from 'clappr'
+import {CorePlugin, Events} from 'clappr'
 import TimelineEvent from './TimelineEvent.js'
 
-export default class TimelineEventsPlugin extends ContainerPlugin {
-
+export default class TimelineEventsPlugin extends CorePlugin {
     // backwards compatibility
     static get default() {
         return TimelineEventsPlugin
@@ -12,9 +11,8 @@ export default class TimelineEventsPlugin extends ContainerPlugin {
 
     constructor(core) {
         super(core)
-        clearEvents()
-        this._duration = null
         this._mediaControlContainerLoaded = false
+        this.clearEvents()
     }
 
     bindEvents() {
@@ -40,17 +38,13 @@ export default class TimelineEventsPlugin extends ContainerPlugin {
     }
 
     _updateDuration() {
-        this._duration = this.core.mediaControl.container.getDuration() || null
-        this._dispatchEventsForDuration(this._duration)
+        this._dispatchEventsForTime(parseInt(this.core.mediaControl.container.getCurrentTime()))
     }
 
-    _dispatchEventsForDuration(duration) {
+    _dispatchEventsForTime(time) {
         return this._events
-            .filter((event) => event.getTime() === duration)
-            .map((event) => {
-                this.dispatch(event.getName())
-                return event
-            })
+            .filter((event) => event.getTime() === time && !event.isFired())
+            .map(event => event.fire())
     }
 
     _getOptions() {
@@ -86,7 +80,7 @@ export default class TimelineEventsPlugin extends ContainerPlugin {
     }
 
     destroy() {
-        super()
+        super.destroy()
         this._events = null
     }
 }

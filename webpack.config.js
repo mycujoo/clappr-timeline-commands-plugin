@@ -28,8 +28,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'clappr-markers-plugin.js',
-        library: 'ClapprMarkersPlugin',
+        filename: 'clappr-timeline-events-plugin.js',
+        library: 'ClapprTimelineEventsPlugin',
         libraryTarget: 'umd',
     },
 };

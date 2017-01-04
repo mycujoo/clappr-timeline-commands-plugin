@@ -1,8 +1,9 @@
 
 export default class TimelineEvent {
-    constructor(time, eventName) {
-        this._eventName = eventName
+    constructor(time, fn) {
+        this._fn = fn
         this._time = time
+        this._isFired = false
     }
 
     getTime() {
@@ -10,6 +11,16 @@ export default class TimelineEvent {
     }
 
     getName() {
-        return this._eventName
+        return this._fn
+    }
+
+    isFired() {
+        return this._isFired
+    }
+
+    fire() {
+        this._isFired = true
+        this._fn()
+        return this
     }
 }
