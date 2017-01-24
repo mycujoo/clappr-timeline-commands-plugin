@@ -17,13 +17,16 @@
             plugins: {
                 core: [ClapprTimelineCommandsPlugin],
             },
-            timelineCommandsPlugin: [
-                { elapsedTime: 3, fn: createLogCommand(3) },
-                { elapsedTime: 5, fn: createLogCommand(5) },
-                { elapsedTime: 8, fn: createLogCommand(8) },
-                { elapsedTime: 10, fn: createLogCommand(10) },
-                { elapsedTime: 13, fn: createLogCommand(13) },
-            ]
+            timelineCommandsPlugin: {
+                debug: false,
+                list: [
+                    { elapsedTime: 3, fn: createLogCommand(3) },
+                    { elapsedTime: 5, fn: createLogCommand(5) },
+                    { elapsedTime: 8, fn: createLogCommand(8) },
+                    { elapsedTime: 10, fn: createLogCommand(10) },
+                    { elapsedTime: 13, fn: createLogCommand(13) },
+                ]
+            }
         });
 
     </script>

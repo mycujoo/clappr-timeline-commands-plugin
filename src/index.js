@@ -12,8 +12,25 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     constructor(core) {
         super(core)
         this._mediaControlContainerLoaded = false
+        this._debug = false
+        this._setDebugStatus()
+        this.logger('Loading plugin')
+
         this.clearCommands()
+        this.logger('Loading plugin')
+
         this._addInitialCommands()
+    }
+
+    _setDebugStatus() {
+        const options = this._getOptions()
+        this._debug = (options && options.debug) ? true : false
+    }
+
+    logger(message) {
+        if (this._debug) {
+            console.log(`[TimelinePlugin] ${message}`)
+        }
     }
 
     bindEvents() {
@@ -21,12 +38,16 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     }
 
     _addInitialCommands() {
-        var commands = this._getOptions()
-        if (!commands || !Array.isArray(commands) || commands.length === 0) {
+        this.logger(`Adding Initial Commands`)
+        const options = this._getOptions()
+
+        if (!options || !Array.isArray(options.list) || options.list.length === 0) {
+            this.logger(`No commands to add`)
             return
         }
 
-        commands.map((command) => {
+        this.logger(`Adding ${options.list.length}`)
+        options.list.map((command) => {
             this.addCommand(command.elapsedTime, command.fn)
         })
     }
@@ -39,9 +60,11 @@ export default class TimelineCommandsPlugin extends CorePlugin {
 
     _bindContainerEvents() {
         if (this._oldContainer) {
+            this.logger(`unbindingContainerEvents`)
             this.stopListening(this._oldContainer, Events.CONTAINER_TIMEUPDATE, this._onTimeUpdate)
             this.stopListening(this._oldContainer, Events.CONTAINER_SEEK, this._onSeekContainer)
         }
+        this.logger(`bindingContainerEvents`)
         this._oldContainer = this.core.mediaControl.container
         this.listenTo(this.core.mediaControl.container, Events.CONTAINER_TIMEUPDATE, this._onTimeUpdate)
         this.listenTo(this.core.mediaControl.container, Events.CONTAINER_SEEK, this._onSeekContainer)
@@ -76,20 +99,24 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     * Events
     */
     addCommand(time, command) {
+        this.logger(`addCommand at ${time}`)
         this._commands.push(new TimelineCommand(time, command))
     }
 
     removeCommand(time, command) {
+        this.logger(`removeCommand at ${time}`)
         this._commands = this._commands.filter((command) => {
             return command.getTime() !== time && command.getCommand() !== command
         })
     }
 
     clearCommands() {
+        this.logger('clearCommands')
         this._commands = []
     }
 
     resetCommands() {
+        this.logger('resetCommands')
         this._commands.map((command) => command.reset())
     }
 
@@ -100,6 +127,7 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     }
 
     destroy() {
+        this.logger('destroy')
         super.destroy()
         this._commands = null
     }
