@@ -13,10 +13,22 @@ export default class TimelineCommandsPlugin extends CorePlugin {
         super(core)
         this._mediaControlContainerLoaded = false
         this.clearCommands()
+        this._addInitialCommands()
     }
 
     bindEvents() {
         this.listenTo(this.core.mediaControl, Events.MEDIACONTROL_CONTAINERCHANGED, this._onMediaControlContainerChanged)
+    }
+
+    _addInitialCommands() {
+        var commands = this._getOptions()
+        if (!commands || !Array.isArray(commands) || commands.length === 0) {
+            return
+        }
+
+        commands.map((command) => {
+            this.addCommand(command.elapsedTime, command.fn)
+        })
     }
 
     _onMediaControlContainerChanged() {
@@ -55,7 +67,7 @@ export default class TimelineCommandsPlugin extends CorePlugin {
 
     _getOptions() {
         if (!("timelineCommandsPlugin" in this.core.options)) {
-            throw "'timelineCommandsPlugin' property missing from options object."
+            return false
         }
         return this.core.options.timelineCommandsPlugin
     }

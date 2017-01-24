@@ -7,25 +7,24 @@
 <body>
     <div id="player"></div>
     <script>
-        var createLogCommand = function(timer) {
-            return function() { console.log('Command executed on '+timer+'s') }
-        }
-
         var player = new Clappr.Player({
             source: "http://tjenkinson.me/clappr-thumbnails-plugin/assets/video.mp4",
             parentId: "#player",
             plugins: {
                 core: [ClapprTimelineCommandsPlugin],
-            },
-            timelineCommandsPlugin: [
-                { elapsedTime: 3, fn: createLogCommand(3) },
-                { elapsedTime: 5, fn: createLogCommand(5) },
-                { elapsedTime: 8, fn: createLogCommand(8) },
-                { elapsedTime: 10, fn: createLogCommand(10) },
-                { elapsedTime: 13, fn: createLogCommand(13) },
-            ]
+            }
         });
 
+        var timeline = player.getPlugin('timeline-commands-plugin');
+        var createLogCommand = function(timer) {
+            return function() { console.log('Command executed on '+timer+'s') }
+        }
+
+        timeline.addCommand(3, createLogCommand(3))
+        timeline.addCommand(5, createLogCommand(5))
+        timeline.addCommand(8, createLogCommand(8))
+        timeline.addCommand(10, createLogCommand(10))
+        timeline.addCommand(13, createLogCommand(13))
     </script>
 </body>
 </html>
