@@ -17,11 +17,6 @@ export default class TimelineCommandsPlugin extends CorePlugin {
 
         this.logger('Loading plugin')
 
-        this._events = {
-            onTimerUpdate: (time) => { this.logger(`Time Update: ${time}`) },
-            onResetCommands: () => { this.logger(`Resetting commands`) },
-        }
-
         this.clearCommands()
         this._addInitialCommands()
     }
@@ -85,7 +80,6 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     _updateTimer() {
         const currentTime = parseInt(this.core.mediaControl.container.getCurrentTime())
 
-        this._events.onTimerUpdate(currentTime)
         this._executeCommandsForTime(currentTime)
     }
 
@@ -126,7 +120,6 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     resetCommands() {
         this.logger('resetCommands')
         this._commands.map((command) => command.reset())
-        this._events.onResetCommands()
     }
 
     getCommands(start=false, end=false) {
@@ -141,15 +134,4 @@ export default class TimelineCommandsPlugin extends CorePlugin {
         this._commands = null
     }
 
-    /*
-    * Events
-    */
-
-    onResetCommands(fn) {
-        this._events.onResetCommands = fn
-    }
-
-    onTimerUpdate(fn) {
-        this._events.onTimerUpdate = fn
-    }
 }
