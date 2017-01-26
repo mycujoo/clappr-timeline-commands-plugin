@@ -14,11 +14,15 @@ export default class TimelineCommandsPlugin extends CorePlugin {
         this._mediaControlContainerLoaded = false
         this._debug = false
         this._setDebugStatus()
+
         this.logger('Loading plugin')
+
+        this._events = {
+            onTimerUpdate: (time) => { this.logger(`Time Update: ${time}`) },
+            onResetCommands: () => { this.logger(`Resetting commands`) },
+        }
 
         this.clearCommands()
-        this.logger('Loading plugin')
-
         this._addInitialCommands()
     }
 
@@ -79,13 +83,16 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     }
 
     _updateTimer() {
-        this._executeCommandsForTime(parseInt(this.core.mediaControl.container.getCurrentTime()))
+        const currentTime = parseInt(this.core.mediaControl.container.getCurrentTime())
+
+        this._events.onTimerUpdate(currentTime)
+        this._executeCommandsForTime(currentTime)
     }
 
     _executeCommandsForTime(time) {
         return this._commands
             .filter((command) => command.getTime() === time && !command.isFired())
-            .map(command => command.fire())
+            .map((command) => command.fire())
     }
 
     _getOptions() {
@@ -96,8 +103,9 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     }
 
     /*
-    * Events
+    * Command handling Methods
     */
+
     addCommand(time, command) {
         this.logger(`addCommand at ${time}`)
         this._commands.push(new TimelineCommand(time, command))
@@ -118,6 +126,7 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     resetCommands() {
         this.logger('resetCommands')
         this._commands.map((command) => command.reset())
+        this._events.onResetCommands()
     }
 
     getCommands(start=false, end=false) {
@@ -130,5 +139,17 @@ export default class TimelineCommandsPlugin extends CorePlugin {
         this.logger('destroy')
         super.destroy()
         this._commands = null
+    }
+
+    /*
+    * Events
+    */
+
+    onResetCommands(fn) {
+        this._events.onResetCommands = fn
+    }
+
+    onTimerUpdate(fn) {
+        this._events._onTimerUpdate = fn
     }
 }
