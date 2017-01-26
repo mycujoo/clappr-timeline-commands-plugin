@@ -1,6 +1,6 @@
 {
   "name": "clappr-timeline-commands-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A plugin for clappr which executes functions when the timeline hits a time.",
   "main": "dist/clappr-timeline-commands-plugin.js",
   "scripts": {

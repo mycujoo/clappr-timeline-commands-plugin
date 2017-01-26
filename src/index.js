@@ -150,6 +150,6 @@ export default class TimelineCommandsPlugin extends CorePlugin {
     }
 
     onTimerUpdate(fn) {
-        this._events._onTimerUpdate = fn
+        this._events.onTimerUpdate = fn
     }
 }
